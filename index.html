@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birga aylanishga chiqamizmi? 💚</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #e0ffe8, #c5f5d0);
+  color: #21452d;
+  overflow: hidden;
+}
+
+.card {
+  width: min(100%, 550px);
+  padding: 40px 25px;
+  text-align: center;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 15px 50px #267a3930;
+}
+
+h1 { font-size: 32px; }
+
+.sub { color: #718878; }
+
+.buttons {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#yes {
+  background: #20a34a;
+  color: white;
+  padding: 18px 45px;
+  font-size: 22px;
+}
+
+#no {
+  background: #edf2ee;
+  color: #758078;
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+#no.running {
+  position: fixed;
+  z-index: 5;
+}
+
+.hidden { display: none !important; }
+
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0 15px;
+  border: 1px solid #cfe4d3;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+}
+
+#confirm {
+  background: #20a34a;
+  color: white;
+  padding: 14px 30px;
+  font-size: 17px;
+}
+
+.flower {
+  font-size: 75px;
+  animation: sway 2s infinite;
+}
+
+@keyframes sway {
+  0%,100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+
+<section id="question">
+  <div class="flower">🌿</div>
+  <h1>Birga aylanishga chiqamizmi?</h1>
+  <p class="sub">Senga bir taklifim bor... 😊</p>
+
+  <div class="buttons">
+    <button id="yes">Ha! 💚</button>
+    <button id="no">Yo‘q</button>
+  </div>
+</section>
+
+<section id="schedule" class="hidden">
+  <h1>Unda qachon boramiz? ✨</h1>
+  <p class="sub">O‘zingga qulay kun va vaqtni tanla.</p>
+
+  <label>Sana 📅</label>
+  <input type="date" id="date">
+
+  <label>Vaqt 🕒</label>
+  <input type="time" id="time">
+
+  <button id="confirm">Tanladim 💚</button>
+</section>
+
+<section id="sweet" class="hidden">
+  <div class="flower">🌷</div>
+  <h1>Qanday yoqimli! ❤️</h1>
+  <p id="chosen"></p>
+  <p>
+    Bu kunimiz chiroyli xotiralarga boy bo‘lsin.
+    Sen bilan vaqt o‘tkazishni intiqlik bilan kutaman! 😊
+  </p>
+  <div class="flower">🌸</div>
+</section>
+
+</div>
+
+<script>
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+
+let clicks = 0;
+
+yes.onclick = () => {
+  document.getElementById("question").classList.add("hidden");
+  document.getElementById("schedule").classList.remove("hidden");
+  document.getElementById("date").min =
+    new Date().toISOString().slice(0, 10);
+};
+
+no.onclick = () => {
+  clicks++;
+
+  no.classList.add("running");
+
+  const maxX = window.innerWidth - no.offsetWidth - 20;
+  const maxY = window.innerHeight - no.offsetHeight - 20;
+
+  no.style.left = Math.max(10, Math.random() * maxX) + "px";
+  no.style.top = Math.max(10, Math.random() * maxY) + "px";
+
+  let scale = Math.max(0.12, 1 - clicks * 0.16);
+  no.style.transform = `scale(${scale})`;
+  no.style.opacity = Math.max(0, 1 - clicks * 0.14);
+
+  if (clicks >= 7) no.remove();
+};
+
+document.getElementById("confirm").onclick = () => {
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+
+  if (!date || !time) {
+    alert("Iltimos, sana va vaqtni tanla 😊");
+    return;
+  }
+
+  const [y, m, d] = date.split("-");
+
+  document.getElementById("chosen").textContent =
+    `${d}.${m}.${y} kuni, soat ${time} da uchrashamiz!`;
+
+  document.getElementById("schedule").classList.add("hidden");
+  document.getElementById("sweet").classList.remove("hidden");
+};
+</script>
+
+</body>
+</html>
